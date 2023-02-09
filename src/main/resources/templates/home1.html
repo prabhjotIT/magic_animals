@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 1</title>
+
+    <style>
+    
+    .begin {
+  text-align: center;
+  border: 3px solid green;
+  padding: 10px;
+  }
+
+  .comments {
+  text-align: center;
+  border: 3px solid green;
+  padding: 10px;
+  margin-top:10px;
+  }
+
+  .score {
+  text-align: center;
+  border: 3px solid green;
+  padding: 10px;
+  margin-top:10px;
+  }
+
+      .row {
+    margin-top:10px;
+    border: 3px solid green;
+  padding: 10px;
+  }
+    
+  .column {
+    width: 40%;
+    padding: 5px;
+  }
+
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 16px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+    </style>
+    
+</head>
+<body>
+
+  <div class="begin" style="align-content: center;">
+    Name: <input type="text" id="myText" value="" placeholder="Enter name">
+    <button type="button" onclick="myFunction()">Start</button>
+  </div>
+
+
+  <div class="row">
+    <div class="column" style="display: inline-block;">
+      <form action="/attack" th:object="${game}"method="post">
+        <label for="animaltype" >Choose your type:</label>
+        <select id="type" name="type" th:field="*{playertype}">
+          <option value="fire" th:value="fire">Fire</option>
+          <option value="water" th:value="water">water</option>
+          <option value="leaf" th:value="leaf">Leaf</option>
+          
+        </select>
+        <label for="animal">Choose your Animal:</label>
+        <select id="animal" th:field="*{playerAnimal}" name="animal">
+          <option value="lion" th:value="lion">lion</option>
+          <option value="turtle" th:value="turtle">turtle</option>
+          <option value="hyena" th:value="hyena">hyena</option>
+          
+        </select>
+        <br>
+        <br>
+        <button type="submit">Attack</button>
+      </form>
+    </div>
+    <div class="column" style="float: right;">
+      <table id="table2" border="1">
+        <thead>
+          <tr>
+            <th colspan="4">Computer</th>
+          </tr>
+          <tr>
+            <td><img th:src="@{${c1animalphoto}}" alt="Turtle" width="40" height="40"><span th:text="${c1attack}"></span></td>
+          </tr>
+          <tr>
+            <td><img th:src="@{${c2animalphoto}}" alt="Lion" width="40" height="40"><span th:text="${c2attack}"></span></td>
+          </tr>  
+            <tr>
+              <td><img th:src="@{${c3animalphoto}}" alt="Hyena" width="40" height="40"><span th:text="${c3attack}"></span></td>    
+            </tr>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+
+  <div class="comments">
+    <label text="comment here" id="attack" style="height: 80%; width: 80%; text-align:center;" th:text="${comment}"></label>
+    <label text="comment here" id="attack" style="height: 80%; width: 80%; text-align:center;" th:text="${game.comment}"></label>
+  </div>
+
+  <div class="score">
+    <table>
+      <tr>
+        <th></th>
+        <th style="text-align: center; padding: 10px;">
+          <input type="text" id="user1" style="height: 80%; width: 80%; text-align:center;">
+        </th>
+        <th style="text-align: center; padding: 10px;">
+          <input type="text" id="user" value="Computer1" style="height: 80%; width: 80%; text-align:center;">
+        </th>
+        <th style="text-align: center; padding: 10px;">
+          <input type="text" id="user" value="Computer2" style="height: 80%; width: 80%; text-align:center;">
+        </th>
+        <th style="text-align: center; padding: 10px;">
+          <input type="text" id="user" value="Computer3" style="height: 80%; width: 80%; text-align:center;">
+        </th>
+      </tr>
+      <tr>
+        <td>Health</td>
+        <td style="text-align: center; padding: 10px;">
+          <label type="text" id="healthuser" style="height: 80%; width: 80%; text-align:center;" th:text="${game.getP().getHealth()}" ></label>
+        </td>
+        <td style="text-align: center; padding: 10px;">
+          <label type="text" id="healthcomputer1"  style="height: 80%; width: 80%; text-align:center;" th:text="${c1health}"></label>
+        </td>
+        <td style="text-align: center; padding: 10px;">
+          <label type="text" id="healthcomputer2"  style="height: 80%; width: 80%; text-align:center;" th:text="${game.getC2().getHealth()}"></label>
+        </td>
+        <td style="text-align: center; padding: 10px;">
+          <label type="text" id="healthcomputer3"  style="height: 80%; width: 80%; text-align:center;" th:text="${game.getC3().getHealth()}"></label>
+        </td>
+        
+      </tr>
+    </table>
+  </div>
+    
+
+
+
+
+
+
+
+      <script type="text/javascript">
+
+        function myFunction(e) {
+          var inputVal = document.getElementById("myText").value;
+          
+          document.getElementById("user1").value = inputVal;
+        }
+
+        function reply_click(e) {
+          var inputVal = document.getElementById("myText").value;
+          e = e || window.event;
+          e = e.target || e.srcElement;
+
+          document.getElementById("attack").value = inputVal + " attacked computer with " + e.id;
+        }
+
+        function handleClick(evt) {
+          var node = evt.target || evt.srcElement;
+          if (node.name == 'Fire snap') {
+            node.value = "Modify";
+          }
+          
+        }
+        
+        </script>
+</body>
+</html>
